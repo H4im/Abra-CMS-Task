@@ -1,36 +1,152 @@
 ﻿@using Umbraco.Cms.Web.Common.PublishedModels;
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Article>
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
-@{
-    Layout = null;
+@using Umbraco.Cms.Core.Models.PublishedContent;
+@{ 
+    Layout = null; 
     var heroImage = Model.Value<IPublishedContent>("heroImage");
 }
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>@Model.Value("title")</title>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <title>@Model.Value("title") | Abra Insights</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; max-width: 800px; margin: 40px auto; padding: 20px; color: #333; }
-        .back-link { display: inline-block; margin-bottom: 20px; color: #007bff; text-decoration: none; }
-        .hero-img { width: 100%; max-height: 400px; object-fit: cover; border-radius: 8px; margin: 20px 0; }
-        .author { color: #666; font-style: italic; }
-        .content { margin-top: 30px; font-size: 1.1em; }
+        :root {
+            --primary: #2563eb;
+            --bg: #f4f4f4;
+            --black: #000000;
+        }
+        body { 
+            background: var(--bg); 
+            font-family: 'Space Grotesk', sans-serif; 
+            padding: 40px 20px; 
+            margin: 0;
+        }
+        .post-container { 
+            max-width: 850px; 
+            margin: 0 auto; 
+            background: white; 
+            border: 4px solid var(--black); 
+            box-shadow: 12px 12px 0px var(--black);
+            padding: 0; 
+            overflow: hidden;
+        }
+        
+        .back-nav { 
+            padding: 20px 60px; 
+            border-bottom: 4px solid var(--black); 
+            background: #fff;
+        }
+        .back-nav a { 
+            text-decoration: none; 
+            color: var(--black); 
+            font-weight: 700; 
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+        .back-nav a:hover { color: var(--primary); }
+
+        /* Title Section at the top */
+        .article-header {
+            padding: 60px 60px 40px 60px;
+            background: #fff;
+        }
+
+        .tag { 
+            background: var(--primary); 
+            color: white; 
+            padding: 6px 16px; 
+            font-weight: 700; 
+            font-size: 0.75rem; 
+            display: inline-block;
+            margin-bottom: 20px;
+            border: 2px solid var(--black);
+            text-transform: uppercase;
+        }
+
+        h1 { 
+            font-size: 4rem; 
+            margin: 0 0 20px 0; 
+            text-transform: uppercase; 
+            letter-spacing: -3px; 
+            line-height: 0.9; 
+            color: var(--black);
+        }
+
+        .author-box { 
+            font-weight: 700; 
+            color: #555;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        /* Hero Image - Now in the middle */
+        .hero-img-wrapper {
+            border-top: 4px solid var(--black);
+            border-bottom: 4px solid var(--black);
+        }
+        .hero-img { 
+            width: 100%; 
+            display: block;
+            max-height: 550px;
+            object-fit: cover;
+        }
+
+        /* Body Content */
+        .inner-content { padding: 50px 60px; }
+		.body-text { 
+            font-size: 1.25rem; 
+            line-height: 1.7; 
+            font-weight: 500; 
+            color: #222;
+        }
+
+        /* Add these lines below to force consistency */
+        .body-text * { 
+            font-size: inherit !important; 
+            font-family: inherit !important;
+            line-height: inherit !important;
+        }
+        .body-text img { 
+            max-width: 100%; 
+            height: auto; 
+            border: 3px solid var(--black); 
+            box-shadow: 6px 6px 0px var(--black); 
+            margin: 30px 0; 
+            display: block;
+        }
+        .body-text p { margin-bottom: 25px; }
     </style>
 </head>
 <body>
-    <a href="/" class="back-link">← Back to Home</a>
-    
-    <h1>@Model.Value("title")</h1>
-    <p class="author">Published by: @Model.Value("authorName")</p>
+    <div class="post-container">
+        <nav class="back-nav">
+            <a href="/">← INDEX</a>
+        </nav>
 
-    @if (heroImage != null)
-    {
-        <img src="@heroImage.Url()" class="hero-img" alt="@Model.Name" />
-    }
+        <header class="article-header">
+            <span class="tag">@Model.Value("category")</span>
+            <h1>@Model.Value("title")</h1>
+            <div class="author-box">
+                BY @Model.Value("authorName")
+            </div>
+        </header>
 
-    <div class="content">
-        @Html.Raw(Model.Value("articleContent"))
+        @if (heroImage != null)
+        {
+            <div class="hero-img-wrapper">
+                <img src="@heroImage.Url()" class="hero-img" alt="@Model.Name" />
+            </div>
+        }
+
+        <div class="inner-content">
+            <div class="body-text">
+                @Html.Raw(Model.Value("articleContent"))
+            </div>
+        </div>
     </div>
 </body>
 </html>
